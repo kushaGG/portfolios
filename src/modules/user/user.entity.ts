@@ -8,6 +8,6 @@ export class User {
   @Column({ type: 'varchar', length: 120 })
   public username: string;
 
-  @Column({ type: 'varchar', select: false })
+  @Column({ type: 'varchar' })
   public password: string;
 }

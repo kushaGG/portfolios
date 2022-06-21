@@ -1,4 +1,4 @@
-import { Controller, Post, Request, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateDto } from './dto/create.dto';
 
@@ -9,5 +9,16 @@ export class UserController {
   @Post()
   async create(@Body() body: CreateDto) {
     return this.userService.createUser(body);
+  }
+
+  @Post('login')
+  login(@Body() loginUserDto: CreateDto) {
+    return this.userService.login(loginUserDto).then((jwt: string) => {
+      return {
+        access_token: jwt,
+        token_type: 'JWT',
+        expires_in: 10000,
+      };
+    });
   }
 }

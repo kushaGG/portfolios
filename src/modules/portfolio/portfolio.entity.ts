@@ -1,23 +1,23 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Portfolio } from '../portfolio/portfolio.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
-export class User {
+export class Portfolio {
   @PrimaryGeneratedColumn()
   public id: number;
 
   @Column({ type: 'varchar', length: 120 })
-  public username: string;
+  public title: string;
 
-  @Column({ type: 'varchar' })
-  public password: string;
+  @Column({ type: 'varchar', length: 320 })
+  public description: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -32,6 +32,9 @@ export class User {
   })
   public updated_at: Date;
 
-  @OneToMany(() => Portfolio, (portfolio) => portfolio.user)
-  portfolios: Portfolio[];
+  @Column({ type: 'int' })
+  userId: number;
+
+  @ManyToOne(() => User, (user) => user.portfolios)
+  user: User;
 }

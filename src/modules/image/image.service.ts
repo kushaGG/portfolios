@@ -17,14 +17,36 @@ export class ImageService extends AbstractService<Image> {
   }
 
   async create(doc, ...args): Promise<Image> {
-    const { file } = Object.fromEntries(args);
+    const { userId, file } = Object.fromEntries(args);
 
-    doc.image = await this.filesService.uploadPublicFile(
-      file.buffer,
-      file.originalname,
-    );
+    if (!userId) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
-    return super.create(doc);
+    const portfolio = await this.portfolioService.findOne({
+      id: doc.portfolioId,
+    });
+
+    if (!portfolio) {
+      throw new HttpException('Portfolio not Found', HttpStatus.NOT_FOUND);
+    } else {
+      if (portfolio.userId !== userId) {
+        throw new HttpException(
+          `You can't add image to that's portfolio`,
+          HttpStatus.CONFLICT,
+        );
+      } else {
+        doc.image = await this.filesService.uploadPublicFile(
+          file.buffer,
+          file.originalname,
+        );
+
+        return super.create(doc);
+      }
+    }
   }
 
   async update(id: number, updateDoc, ...args) {

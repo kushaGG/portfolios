@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { AbstractService } from '../../config/abstract.service';
 import * as bcrypt from 'bcrypt';
-import { CreateDto } from './dto/create.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UserService extends AbstractService<User> {
     super(userRepository);
   }
 
-  async createUser(body: CreateDto): Promise<Partial<User>> {
+  async createUser(body: CreateUserDto): Promise<Omit<User, 'password'>> {
     const isExists: boolean = await this.nameExists(body.username);
 
     if (!isExists) {
@@ -33,7 +33,7 @@ export class UserService extends AbstractService<User> {
     }
   }
 
-  async login(loginUserDto: CreateDto) {
+  async login(loginUserDto: CreateUserDto) {
     const user: User = await this.findOne({ username: loginUserDto.username });
     if (user) {
       const isValidPassword = await bcrypt.compare(

@@ -3,15 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinTable,
 } from 'typeorm';
-import { User } from '../user/user.entity';
-import { Image } from '../image/image.entity';
+import { Portfolio } from '../portfolio/portfolio.entity';
 
 @Entity()
-export class Portfolio {
+export class Image {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -20,6 +19,12 @@ export class Portfolio {
 
   @Column({ type: 'varchar', length: 320 })
   public description: string;
+
+  @Column({ type: 'varchar', array: true, default: [] })
+  public comments: string[];
+
+  @Column({ type: 'varchar' })
+  public image: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -35,11 +40,9 @@ export class Portfolio {
   public updated_at: Date;
 
   @Column({ type: 'int' })
-  userId: number;
+  portfolioId: number;
 
-  @ManyToOne(() => User, (user) => user.portfolios)
-  user: User;
-
-  @OneToMany(() => Image, (image) => image.portfolioId)
-  images: Image[];
+  @JoinTable()
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.images)
+  portfolio: Portfolio;
 }

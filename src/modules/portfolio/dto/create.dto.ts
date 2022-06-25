@@ -4,9 +4,10 @@ export class CreateDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 120)
-  username: string;
+  title: string;
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  @Length(1, 320)
+  description: string;
 }

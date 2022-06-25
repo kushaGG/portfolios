@@ -10,5 +10,6 @@ import { UserModule } from '../user/user.module';
   imports: [DatabaseModule, AuthModule, UserModule],
   controllers: [PortfolioController],
   providers: [...portfolioProviders, PortfolioService],
+  exports: [PortfolioService],
 })
 export class PortfolioModule {}

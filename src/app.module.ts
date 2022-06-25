@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { UserModule } from './modules/user/user.module';
 import { PortfolioModule } from './modules/portfolio/portfolio.module';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PortfolioModule } from './modules/portfolio/portfolio.module';
     }),
     UserModule,
     PortfolioModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

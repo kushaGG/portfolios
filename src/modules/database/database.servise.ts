@@ -7,6 +7,9 @@ import { Image } from '../image/image.entity';
 export default new DataSource({
   type: 'postgres',
   ...Config.database,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   entities: [User, Portfolio, Image],
   migrationsTableName: 'migrations',
   migrationsRun: true,
